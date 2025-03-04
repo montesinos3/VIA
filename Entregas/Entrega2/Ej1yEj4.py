@@ -7,6 +7,8 @@ current_filter = 'none'
 sigma = 1
 sigmacol = 1
 rad = 1
+low_threshold = 0
+high_threshold = 0
 mostrado=False
 crome=False
 soloRoi=True
@@ -35,6 +37,7 @@ def draw_help_menu(img):
         "4: bilateral",
         "5: min",
         "6: max",
+        "7: canny",
         "",
         "c: color/monochrome",
         "r: only roi",
@@ -61,6 +64,14 @@ def update_sigmacol(val):
 def update_rad(val):
     global rad
     rad = val
+
+def update_low(val):
+    global low_threshold
+    low_threshold = val
+
+def update_high(val):
+    global high_threshold
+    high_threshold = val
 
 def box_filter_integral(img, ksize):
     """
@@ -121,7 +132,7 @@ def apply_box_filter(img, ksize):
 
     return np.uint8(output)  
 
-def apply_filter(frame, filter_type, sigma, sigmacol, rad):
+def apply_filter(frame, filter_type, sigma, sigmacol, rad, low, high):
     if filter_type == 'box':
         return box_filter_integral(frame, sigma*2+1)
     elif filter_type == 'gaussian':
@@ -134,6 +145,8 @@ def apply_filter(frame, filter_type, sigma, sigmacol, rad):
         return cv2.erode(frame, np.ones((sigma, sigma), np.uint8))
     elif filter_type == 'max':
         return cv2.dilate(frame, np.ones((sigma, sigma), np.uint8))
+    elif filter_type == 'canny':
+        return cv2.Canny(frame, low, high, 3)
     else:
         return frame
 
@@ -153,6 +166,8 @@ def handle_key_press(key):
         current_filter = 'min'
     elif key == ord('6'):
         current_filter = 'max'
+    elif key == ord('7'):
+        current_filter = 'canny'
 
 # Main function
 def main():
@@ -164,6 +179,8 @@ def main():
     cv2.createTrackbar('Sigma', 'Filtered Video', 1, 500, update_sigma)
     cv2.createTrackbar('SigmaCol', 'Filtered Video', 1, 500, update_sigmacol)
     cv2.createTrackbar('Rad', 'Filtered Video', 1, 50, update_rad)
+    cv2.createTrackbar('Low Threshold', 'Filtered Video', 0, 255, update_low)
+    cv2.createTrackbar('High Threshold', 'Filtered Video', 0, 255, update_high)
 
     while True:
         ret, frame = cap.read()
@@ -216,8 +233,8 @@ def main():
         else:
             roi = frame
         
-
-        filtered_roi = apply_filter(roi, current_filter, sigma, sigmacol, rad)
+        
+        filtered_roi = apply_filter(roi, current_filter, sigma, sigmacol, rad, low_threshold, high_threshold)
 
         if len(filtered_roi.shape) == 2 and len(frame.shape)==3:
             filtered_roi = cv2.cvtColor(filtered_roi, cv2.COLOR_GRAY2BGR)
