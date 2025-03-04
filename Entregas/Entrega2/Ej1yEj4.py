@@ -11,7 +11,7 @@ low_threshold = 0
 high_threshold = 0
 mostrado=False
 crome=False
-soloRoi=True
+soloRoi=False
 cv2.namedWindow('Filtered Video')
 region = ROI("Filtered Video")
 
