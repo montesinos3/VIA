@@ -1,0 +1,26 @@
+1920x1080
+
+FOV horizontal = 2*arctan(w/2f) = 2*arctan(1920/2*1479)=65.9742 grados
+
+FOV vertical = 2*arctan(h/2f) = 2*arctan(1080/2*1479)=40.1154 grados
+
+pixeles del ratón (9 cm) a 20 cm de la cámara = 635px
+tamaño teorico en pixeles = u = f*X/Z= 1479*9/20= 665px
+diferencia en pixeles = 30px
+
+el tamaño en pixels que tendrá una persona situada a 10m de la cámara = 1479*0.5/10 = 73.95px
+A qúe distancia se encuntra un coche que en la imagen tiene 20px del acho: 20px = 1479*1.8m(supuestamente)/Z -> Z=1479*1.8/20=133m
+
+Determina a qué altura hay que poner la cámara para obtener una vista cenital completa de un campo de baloncesto.
+1920px=1479*28m/Z -> Z=1479*28/1920=21.57m
+
+Calcula el tamaño en pixels de la pelota cuando está en el suelo
+u=1479*0.22m/21.57m=15.08px
+
+Escribe una función que devuelva la altura de la pelota sobre el suelo a partir de su diámetro aparente en pixels.
+fun(diam)=f*0.22/diam=Z=altura
+
+
+
+grados = 21.89
+grados teóricos = 65.97*665/1920=22.84
