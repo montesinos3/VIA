@@ -5,7 +5,7 @@ from umucv.stream import autoStream
 from umucv.util import putText
 import importlib
 import numpy as np
-import time
+import time 
 
 # Diccionario para almacenar los métodos de comparación disponibles
 comparison_methods = {}
@@ -39,7 +39,7 @@ def main():
     if not os.path.exists(args.models):
         os.makedirs(args.models)
     
-    # Cargar modelos
+    # Cargar modelos (imagenes) desde el directorio
     models = {}
     for filename in os.listdir(args.models):
         if filename.endswith((".jpg", ".png", ".jpeg")):
@@ -63,7 +63,7 @@ def main():
         # Mostrar frame original
         cv2.imshow('Input', frame)
         
-        # Modo de guardado de nuevo modelo
+        # Modo de guardado de nuevo modelo (imagen)
         if save_mode:
             putText(frame, f"Guardando modelo: {new_model_name} (Enter para confirmar, Esc para cancelar)")
             cv2.imshow('Save Model', frame)
@@ -101,22 +101,27 @@ def main():
             results[model_name] = similarity
         
         # Encontrar el mejor resultado
-        best_match = max(results.items(), key=lambda x: x[1])
+        best_match = max(results.items(), key=lambda x: x[1]) # como es una tupla (nombre,valor) toma como key el valor para compararlo
         processing_time = (time.time() - start_time) * 1000  # ms
         
-        # Mostrar resultados
+        # Mostrarlo en pantalla
         result_frame = frame.copy()
         putText(result_frame, f"Mejor coincidencia: {best_match[0]} ({best_match[1]:.2f})")
         putText(result_frame, f"Tiempo: {processing_time:.1f} ms", (10, 40))
         
+        # Eliminar el mejor resultado para mostrar los demás
+        results.pop(best_match[0])
+
         # Mostrar todos los resultados
         y_pos = 70
         for model_name, similarity in sorted(results.items(), key=lambda x: x[1], reverse=True):
             putText(result_frame, f"{model_name}: {similarity:.2f}", (10, y_pos))
             y_pos += 30
         
+        # Muestro un mensaje para guardar un nuevo modelo en la esquina inferior derecha
         if args.save:
-            putText(result_frame, "Presione 's' para guardar un nuevo modelo", (10, y_pos + 30))
+            putText(result_frame, "Presione 's' para guardar un nuevo modelo", (270, 350))
+        
         
         cv2.imshow('Result', result_frame)
 

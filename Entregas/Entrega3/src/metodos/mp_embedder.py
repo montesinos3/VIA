@@ -17,13 +17,13 @@ model_path = os.path.join(current_dir, 'embedder.tflite')
 if not os.path.exists(model_path):
     raise FileNotFoundError(f"No se encontró el modelo en: {model_path}")
     
-print(f"Usando modelo desde: {model_path}")  # Para depuración
+print(f"Usando modelo desde: {model_path}")  # Para depurar
 
 # Leer el contenido del archivo
 with open(model_path, 'rb') as f:
     model_content = f.read()
 
-# Inicializar el embedder de MediaPipe usando el contenido del modelo
+# Inicializar el embedder de MediaPipe usando el modelo
 base_options = BaseOptions(model_asset_buffer=model_content)
 options = vision.ImageEmbedderOptions(base_options=base_options)
 
@@ -42,18 +42,12 @@ def precompute(image):
 
 def compare(image, model_features):
     """Compara la imagen con el modelo usando embeddings de MediaPipe"""
-    # Convertir a formato RGB
-    rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    # Crear objeto de imagen de MediaPipe
-    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_image)
-    # Obtener embedding
-    embedding_result = embedder.embed(mp_image)
-    image_embedding = embedding_result.embeddings[0].embedding
+    # Reutilizo el metodo precompute para obtener el embedding de la imagen
+    image_embedding = precompute(image)
     
     # Calcular similitud de coseno
-    dot_product = np.dot(model_features, image_embedding)
-    norm_model = np.linalg.norm(model_features)
-    norm_image = np.linalg.norm(image_embedding)
+    dot_product = np.dot(model_features, image_embedding) #Producto matricial estandar (multiplicacion de matrices) 
+    norm_model, norm_image = np.linalg.norm(model_features), np.linalg.norm(image_embedding)
     similarity = dot_product / (norm_model * norm_image)
     
     return similarity
