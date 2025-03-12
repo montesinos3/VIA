@@ -8,7 +8,7 @@ import cv2 as cv
 from umucv.util import ROI, putText
 from umucv.stream import autoStream
 
-cv.namedWindow("input")
+
 region = ROI("input")
 
 for key, frame in autoStream():

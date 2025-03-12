@@ -17,3 +17,4 @@ for key,frame in autoStream():
     info = f"sigma={sigma.value:.1f} low={low_threshold.value} high={high_threshold.value}"
     putText(frame,info)
     cv2.imshow('canny',frame)
+

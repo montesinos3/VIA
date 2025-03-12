@@ -25,7 +25,7 @@ for key,frame in autoStream():
     mpimage = mp.Image(image_format=mp.ImageFormat.SRGB, data=cv.cvtColor(frame, cv.COLOR_BGR2RGB))
 
     descriptor = embedder.embed(mpimage).embeddings[0]
-    print(descriptor)
+    
     if key==ord('c'):
         model = descriptor
     
@@ -33,7 +33,6 @@ for key,frame in autoStream():
         similarity = vision.ImageEmbedder.cosine_similarity(descriptor, model)
         W = frame.shape[1]
         cv.rectangle(frame,(0,0),(int(similarity*W), 20), color=(0,255,0), thickness=-1)
-        cv.putText(frame, f'{similarity:.2f}', (10,15), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1, cv.LINE_AA)
-
+        
     cv.imshow("similarity", frame)
 
