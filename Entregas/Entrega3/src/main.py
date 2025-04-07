@@ -92,7 +92,7 @@ def main():
             putText(frame, "No hay modelos cargados. Añada modelos al directorio.")
             cv2.imshow('Result', frame)
             continue
-        
+            
         # Comparar frame con modelos
         start_time = time.time()
         results = {}
@@ -104,26 +104,47 @@ def main():
         best_match = max(results.items(), key=lambda x: x[1]) # como es una tupla (nombre,valor) toma como key el valor para compararlo
         processing_time = (time.time() - start_time) * 1000  # ms
         
-        # Mostrarlo en pantalla
         result_frame = frame.copy()
-        putText(result_frame, f"Mejor coincidencia: {best_match[0]} ({best_match[1]:.2f})")
-        putText(result_frame, f"Tiempo: {processing_time:.1f} ms", (10, 40))
-        
-        # Eliminar el mejor resultado para mostrar los demás
-        results.pop(best_match[0])
+        if models != "sift":
+            # Mostrarlo en pantalla
+            putText(result_frame, f"Mejor coincidencia: {best_match[0]} ({best_match[1]:.2f})")
+            putText(result_frame, f"Tiempo: {processing_time:.1f} ms", (10, 40))
+            
+            # Eliminar el mejor resultado para mostrar los demás
+            results.pop(best_match[0])
 
-        # Mostrar todos los resultados
-        y_pos = 70
-        for model_name, similarity in sorted(results.items(), key=lambda x: x[1], reverse=True):
-            putText(result_frame, f"{model_name}: {similarity:.2f}", (10, y_pos))
-            y_pos += 30
+            # Mostrar todos los resultados
+            y_pos = 70
+            for model_name, similarity in sorted(results.items(), key=lambda x: x[1], reverse=True):
+                putText(result_frame, f"{model_name}: {similarity:.2f}", (10, y_pos))
+                y_pos += 30
+            
+            # Muestro un mensaje para guardar un nuevo modelo en la esquina inferior derecha
+            if args.save:
+                putText(result_frame, "Presione 's' para guardar un nuevo modelo", (270, 350))
+
+            cv2.imshow('Result', result_frame)
+        else: 
+            if key == ord('x'):
+                x0 = None
+            if key == ord('c'):
+                k0, d0, x0 = best_match[0], best_match[1], frame
+            if x0 is None:
+                flag = cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS
+                cv2.drawKeypoints(result_frame, best_match[0], result_frame, color=(100,150,255), flags=flag)
+                cv2.imshow('Result', result_frame)
+            else:
+                imgm = cv2.drawMatches(result_frame, best_match[0], x0, k0, good,
+                                    flags=0,
+                                    matchColor=(128,255,128),
+                                    singlePointColor = (128,128,128),
+                                    outImg=None)
+
+                putText(imgm ,f'{len(good)} matches  {1000*(t3-t2):.0f} ms', 
+                            orig=(5,36), color=(200,255,200))
         
-        # Muestro un mensaje para guardar un nuevo modelo en la esquina inferior derecha
-        if args.save:
-            putText(result_frame, "Presione 's' para guardar un nuevo modelo", (270, 350))
         
         
-        cv2.imshow('Result', result_frame)
 
 if __name__ == "__main__":
     main()

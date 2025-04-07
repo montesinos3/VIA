@@ -1,0 +1,1 @@
+El directorio Entregas está pensado para ser incluido en el repositorio umucv al mismo nivel que los directorios code e images, ya que si comprimo todo el repositorio, se supera el limite de peso en el AV.
