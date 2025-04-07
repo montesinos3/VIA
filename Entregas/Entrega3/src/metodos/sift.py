@@ -1,7 +1,7 @@
 import cv2 as cv
 
 # Crear el detector SIFT y el matcher
-sift = cv.SIFT_create(nfeatures=200)
+sift = cv.SIFT_create(nfeatures=500)
 matcher = cv.BFMatcher()
 
 def precompute(image):
