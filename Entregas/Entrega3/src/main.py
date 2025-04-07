@@ -137,7 +137,8 @@ def main():
             t1 = time.time()
             putText(result_frame, f'{len(keypoints)} pts  {1000*(t1-t0):.0f} ms')
             
-            k0,d0 = sift.detectAndCompute(mejor_imagen, mask=None)
+            # Recuperar keypoints y descriptores del modelo con mejor coincidencia
+            k0,d0 = models[best_match[0]]['features']['keypoints'], models[best_match[0]]['features']['descriptors'] 
             x0=mejor_imagen
             t2 = time.time()
             matches = cv2.BFMatcher().knnMatch(descriptors, d0, k=2)
