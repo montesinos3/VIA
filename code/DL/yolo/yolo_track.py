@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-# import os
-# os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
-
 import numpy as np
 import cv2 as cv
 from umucv.stream import autoStream
