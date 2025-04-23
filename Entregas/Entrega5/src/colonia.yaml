@@ -1,0 +1,8 @@
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+path: C:\Users\Jorge\OneDrive\Escritorio\Universidad\4o\2oCuatri\VIA\Entregas\Entrega5\src #C:\Users\jormo\Desktop\jorge\Universidad\4o\2oCuatri\VIA\DoscModificados\Entregas\Entrega5\src # dataset root dir (absolute or relative; if relative, it's relative to default datasets_dir)
+train: train
+val:   val
+test:  train
+
+names:
+    0: colonia

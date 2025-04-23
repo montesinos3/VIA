@@ -2,7 +2,7 @@
 
 from ultralytics import YOLO
 
-model = YOLO("./runs/detect/train/weights/best.pt")
+model = YOLO("./runs/detect/train2/weights/best.pt")
 
 import cv2 as cv
 from umucv.stream import autoStream
