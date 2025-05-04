@@ -12,7 +12,9 @@ val
     labels
 
 
-yolo detect train data=colonia.yaml model=yolo11n.pt epochs=200 imgsz=640 augment=True
+set KMP_DUPLICATE_LIB_OK=TRUE
+
+yolo detect train data=diana.yaml model=yolo11n.pt epochs=200 imgsz=640 augment=True
 
 Aunque haya pocos ejemplos, hay que hacer un número de epochs suficientes para que
 el map50-95 y otras métricas suban lo suficiente.
